@@ -36,7 +36,7 @@ public class Task5 {
 
         @Override
         public String toString() {
-            return "(" + firstName + ", " + lastName + ")";
+            return "(" + lastName + ", " + firstName + ")";
         }
 
         private static class FriendComparator implements Comparator<Friend> {
