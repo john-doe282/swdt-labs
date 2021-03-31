@@ -5,6 +5,10 @@ import java.util.Locale;
 
 public class Task2 {
     public static String firstNonRepeatedLetter(String input) {
+        if (input.length() == 1) {
+            return input;
+        }
+        
         String lowerCase = input.toLowerCase(Locale.ROOT);
         char[] lowerCaseSortedArray = lowerCase.toCharArray();
         Arrays.sort(lowerCaseSortedArray);

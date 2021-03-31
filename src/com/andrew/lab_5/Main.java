@@ -30,7 +30,7 @@ public class Main {
         System.out.println(ExtraTask2.toIPv4(2149583361L));
     }
     public static void main(String[] args) {
-        
+
         mainTasks();
         extraTasks();
 
