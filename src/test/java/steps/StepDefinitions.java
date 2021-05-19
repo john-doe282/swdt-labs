@@ -91,7 +91,7 @@ public class StepDefinitions {
 
     @Then("User is on Results page")
     public void userIsOnResultsCheck() {
-        assert currentPage instanceof SearchResultsPage;
+        assert currentPage.isSearchResults();
     }
 
     @When("User clicks language button")

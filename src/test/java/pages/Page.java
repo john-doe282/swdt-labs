@@ -142,4 +142,8 @@ public abstract class Page {
     public boolean isLanguageRussian() {
         return currentLanguage() == Language.RUSSIAN;
     }
+
+    public boolean isSearchResults() {
+        return this instanceof SearchResultsPage;
+    }
 }
