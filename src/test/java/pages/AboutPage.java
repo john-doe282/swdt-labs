@@ -18,7 +18,12 @@ public class AboutPage extends Page  {
 
     @Override
     public WebElement getNavItem() {
-        WebElement menu = super.getNavItem();
-        return menu.findElement(new By.ByLinkText("About"));
+        return navItem.
+                findElement(new By.ByLinkText("About"));
+    }
+
+    @Override
+    public boolean isPageHighlighted() {
+        return getNavItem().isSelected();
     }
 }

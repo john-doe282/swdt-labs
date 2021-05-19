@@ -1,6 +1,7 @@
 package pages;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 public class SearchResultsPage extends Page {
 
@@ -11,5 +12,15 @@ public class SearchResultsPage extends Page {
     @Override
     public void goToPage() {
 
+    }
+
+    @Override
+    protected WebElement getNavItem() {
+        return null;
+    }
+
+    @Override
+    public boolean isPageHighlighted() {
+        return false;
     }
 }

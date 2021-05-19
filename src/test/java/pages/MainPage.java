@@ -1,13 +1,12 @@
 package pages;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public class ServicesPage extends Page {
-    private final String address = "services";
+public class MainPage extends Page {
+    private final String address = "";
 
-    public ServicesPage(WebDriver driver) {
+    public MainPage(WebDriver driver) {
         super(driver);
     }
 
@@ -18,12 +17,11 @@ public class ServicesPage extends Page {
 
     @Override
     protected WebElement getNavItem() {
-        return navItem.
-                findElement(new By.ByLinkText("Services"));
+        return null;
     }
 
     @Override
     public boolean isPageHighlighted() {
-        return getNavItem().isSelected();
+        return false;
     }
 }

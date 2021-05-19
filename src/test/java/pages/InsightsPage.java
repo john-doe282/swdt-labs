@@ -18,8 +18,13 @@ public class InsightsPage extends Page {
 
     @Override
     public WebElement getNavItem() {
-        WebElement menu = super.getNavItem();
-        return menu.findElement(new By.ByLinkText("Insights"));
+        return navItem.
+                findElement(new By.ByLinkText("Insights"));
+    }
+
+    @Override
+    public boolean isPageHighlighted() {
+        return getNavItem().isSelected();
     }
 
 }

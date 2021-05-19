@@ -4,6 +4,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -21,8 +23,33 @@ class UrlHelper {
 public abstract class Page {
     private final WebDriver driver;
 
+    @FindBy(xpath = "//*[contains(@class, 'breadcrumbs__link')]")
+    protected List<WebElement> path;
+
+    @FindBy(xpath = "//*[contains(@class, 'footer-ui')]")
+    protected WebElement footer;
+
+    @FindBy(xpath = "//*[contains(@class, 'header-ui')]")
+    protected WebElement menu;
+
+    @FindBy(xpath = "//*[contains(@class, 'top-navigation__row')]")
+    protected WebElement navItem;
+
+    @FindBy(xpath = "//*[contains(@class, 'header-search__button')]")
+    protected WebElement searchButton;
+
+    @FindBy(xpath = "//*[contains(@id, 'new_form_search')]")
+    protected WebElement searchField;
+
+    @FindBy(xpath = "//*[contains(@class, 'header-search__submit')]")
+    protected WebElement submitButton;
+
+    @FindBy(xpath = "//*[contains(@class, 'location-selector__button')]")
+    protected WebElement languageButton;
+
     Page(WebDriver driver) {
         this.driver = driver;
+        PageFactory.initElements(driver, this);
     }
 
     protected void visitPage(String address) {
@@ -44,66 +71,52 @@ public abstract class Page {
     }
 
     public WebElement getPath() {
-        List<WebElement> elements = driver.
-                findElements(By.className("breadcrumbs__link"));
-        return elements.get(elements.size() - 1);
+        return path.get(path.size() - 1);
     }
 
-    public WebElement getFooter() {
-        return driver.findElement(By.className("footer-ui"));
+    public boolean isPathVisible(String page) {
+        return getPath().getText().equalsIgnoreCase(page);
     }
 
-    public WebElement getMenu() {
-        return driver.findElement(By.className("header-ui"));
+    public boolean isFooterVisible() {
+        return footer.isDisplayed();
     }
 
-    public WebElement getNavItem() {
-        return driver.findElement(By.className("top-navigation__row"));
+    public boolean isMenuVisible() {
+        return menu.isDisplayed();
     }
 
-    public WebElement getSearchButton() {
-        return driver.findElement(By.className("header-search__button"));
+    protected abstract WebElement getNavItem();
+
+    public abstract boolean isPageHighlighted();
+
+    public boolean isSearchButtonVisible() {
+        return searchButton.isDisplayed();
     }
 
     public void clickSearchButton() {
-        WebElement searchButton = getSearchButton();
         WebDriverWait wait = new WebDriverWait(driver, 10);
         wait.until(ExpectedConditions.visibilityOf(searchButton));
         searchButton.click();
     }
-    public Page search() {
-        WebElement searchField = driver.
-                findElement(By.id("new_form_search"));
+
+    public Page search(String query) {
         WebDriverWait wait = new WebDriverWait(driver, 20);
         wait.until(ExpectedConditions.elementToBeClickable(searchField));
 
-        searchField.sendKeys("Content");
-        wait.until(ExpectedConditions.elementToBeClickable(searchField));
-
-        WebElement submitButton = driver.findElement(By.className("header-search__submit"));
+        searchField.sendKeys(query);
 
         wait.until(ExpectedConditions.elementToBeClickable(submitButton));
         submitButton.submit();
-        String url = driver.getCurrentUrl();
-//        wait.until(ExpectedConditions.titleIs("Search"));
-//        String title = driver.getTitle();
+
         if (driver.getTitle().equalsIgnoreCase("Search")) {
-            System.out.println("here");
             return new SearchResultsPage(driver);
         }
-        System.out.println(driver.getTitle());
         return null;
     }
 
-    public WebElement getLanguageButton() {
-        return driver.findElement(By.className("location-selector__button"));
-    }
+
     public void clickLanguageButton() {
-        WebElement languageButton = getLanguageButton();
-        String text = languageButton.getText();
-        String tagName = languageButton.getTagName();
-        boolean displayed = languageButton.isDisplayed();
-        boolean selected = languageButton.isSelected();
         languageButton.click();
     }
 
@@ -112,7 +125,7 @@ public abstract class Page {
     }
 
     public Language currentLanguage() {
-        String language = getLanguageButton().getText().split(" ")[0];
+        String language = languageButton.getText().split(" ")[0];
         if (language.equalsIgnoreCase("россия")){
             return Language.RUSSIAN;
         }
@@ -120,5 +133,13 @@ public abstract class Page {
             return Language.ENGLISH;
         }
         return null;
+    }
+
+    public boolean titleEqualsTo(String title) {
+        return driver.getTitle().equalsIgnoreCase(title);
+    }
+
+    public boolean isLanguageRussian() {
+        return currentLanguage() == Language.RUSSIAN;
     }
 }
